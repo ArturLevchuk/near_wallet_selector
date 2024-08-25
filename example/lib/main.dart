@@ -57,6 +57,10 @@ class _HomePageState extends State<HomePage> {
               FilledButton(
                 onPressed: () async {
                   final account = await NearWalletSelector().getAccount();
+                  if (account == null) {
+                    print("Account not found");
+                    return;
+                  }
                   print("Account: $account");
                 },
                 child: const Text(

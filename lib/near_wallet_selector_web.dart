@@ -37,13 +37,13 @@ class NearWalletSelector {
     _showSelector();
   }
 
-  Future<({String accountId, String privateKey})> getAccount() async {
+  Future<({String accountId, String privateKey})?> getAccount() async {
     if (!_inited) {
       throw Exception("Wallet selector not inited");
     }
     final accountRaw = await (_getAccount().toDart);
     if (accountRaw == null) {
-      throw Exception("Account not found");
+      return null;
     }
     final account = jsonDecode(accountRaw.toDart);
     return (
