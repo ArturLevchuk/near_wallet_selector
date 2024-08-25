@@ -1,39 +1,39 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+## Package for the ability to use Near Wallet Selector in Flutter for Web.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Calling modal window to select wallet
+- Extracting account data
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+To use the package, add the following to index.html:
+
+```html
+<script
+  type="module"
+  src="/assets/packages/near_wallet_selector/assets/wallet-selector/dist/bundle.js"
+  defer
+></script>
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Before using methods to show selector and get account, wallet selector must be initialized with network type and smart contract id.
 
 ```dart
-const like = 'sample';
+NearWalletSelector().init("testnet", "test.testnet");
 ```
 
-## Additional information
+To show selector, use `showSelector` method:
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```dart
+NearWalletSelector().showSelector();
+```
+
+After selecting wallet and logging in, you will return to your app. You need to initialize wallet selector again and after that you can use `getAccount` method to get account data.
+
+```dart
+NearWalletSelector().init("testnet", "test.testnet");
+final account = await NearWalletSelector().getAccount();
+```

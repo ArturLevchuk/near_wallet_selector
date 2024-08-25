@@ -1,5 +1,5 @@
 name: near_wallet_selector
-description: "Package for Near Wallet Selector in Flutter for Web"
+description: "Package for the ability to use Near Wallet Selector in Flutter for Web"
 version: 0.0.1
 homepage:
 
