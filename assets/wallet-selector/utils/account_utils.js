@@ -2,11 +2,12 @@ import ls from "local-storage";
 import * as nearAPI from "near-api-js";
 
 export async function getAccount() {
-  const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
-  const network = Array.from(await keyStore.getNetworks())[0];
-  const accountId = Array.from(await keyStore.getAccounts(network))[0];
+  const network = window.selector.options.network.networkId;
+  const accountId = selector.store.getState().accounts[0].accountId;
 
   const keyPair = await getKeyPair(network, accountId);
+
+  // const { selectedWalletId } = window.selector.store.getState();
 
   if (!keyPair) {
     return null;
