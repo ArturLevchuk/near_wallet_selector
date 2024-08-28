@@ -3,7 +3,11 @@ import * as nearAPI from "near-api-js";
 
 export async function getAccount() {
   const network = window.selector.options.network.networkId;
-  const accountId = window.selector.store.getState().accounts[0].accountId;
+  const accountId = window.selector.store.getState().accounts[0]?.accountId;
+
+  if (!accountId || !network) {
+    return null;
+  }
 
   const keyPair = await getKeyPair(network, accountId);
 
