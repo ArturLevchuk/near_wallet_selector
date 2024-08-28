@@ -4,8 +4,12 @@ import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
 import { setupHereWallet } from "@near-wallet-selector/here-wallet";
 import { setupMintbaseWallet } from "@near-wallet-selector/mintbase-wallet";
 import { setupMeteorWallet } from "@near-wallet-selector/meteor-wallet";
+import { setupBitteWallet } from "@near-wallet-selector/bitte-wallet";
 import { setupModal } from "@near-wallet-selector/modal-ui-js";
-import { clearNearWalletSelectorCredentials, getAccount } from "./utils/account_utils";
+import {
+  clearNearWalletSelectorCredentials,
+  getAccount,
+} from "./utils/account_utils";
 
 window.clearNearWalletSelectorCredentials = clearNearWalletSelectorCredentials;
 
@@ -13,15 +17,17 @@ window.initWalletSelector = async (network, contractId) => {
   const selector = await setupWalletSelector({
     network,
     modules: [
-      setupMintbaseWallet(
-        {
-          networkId: network,
-          contractId,
-        }
-      ),
       setupMyNearWallet(),
+      setupBitteWallet({
+        networkId: network,
+        contractId,
+      }),
       setupHereWallet(),
       setupMeteorWallet(),
+      setupMintbaseWallet({
+        networkId: network,
+        contractId,
+      }),
     ],
   });
 
@@ -38,7 +44,4 @@ window.initWalletSelector = async (network, contractId) => {
   window.getAccount = getAccount;
 
   console.log("Wallet selector initialized");
-}
-
-
-
+};

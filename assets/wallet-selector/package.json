@@ -20,12 +20,13 @@
     "vite-plugin-top-level-await": "^1.4.2"
   },
   "dependencies": {
-    "@near-wallet-selector/core": "8.9.10",
-    "@near-wallet-selector/here-wallet": "8.9.10",
-    "@near-wallet-selector/meteor-wallet": "8.9.10",
-    "@near-wallet-selector/mintbase-wallet": "8.9.10",
-    "@near-wallet-selector/modal-ui-js": "8.9.10",
-    "@near-wallet-selector/my-near-wallet": "8.9.10",
+    "@near-wallet-selector/core": "8.9.7",
+    "@near-wallet-selector/here-wallet": "8.9.7",
+    "@near-wallet-selector/meteor-wallet": "8.9.7",
+    "@near-wallet-selector/mintbase-wallet": "8.9.7",
+    "@near-wallet-selector/modal-ui-js": "8.9.7",
+    "@near-wallet-selector/my-near-wallet": "8.9.7",
+    "@near-wallet-selector/bitte-wallet": "^8.9.7",
     "core-js": "3.37.1",
     "local-storage": "^2.0.0",
     "near-api-js": "2.1.4"
