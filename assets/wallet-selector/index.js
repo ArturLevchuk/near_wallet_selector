@@ -38,7 +38,13 @@ window.initWalletSelector = async (network, contractId) => {
   window.selector = selector;
 
   window.showSelector = () => {
-    modal.show();
+    return new Promise((resolve) => {
+      modal.show();
+      const subscription = modal.on("onHide", ({ hideReason }) => {
+        subscription.remove();
+        resolve(hideReason);
+      });
+    });
   };
 
   window.getAccount = getAccount;

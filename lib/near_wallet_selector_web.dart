@@ -5,7 +5,7 @@ import 'dart:js_interop';
 external JSPromise _initWalletSelector(String network, String contractId);
 
 @JS('window.showSelector')
-external void _showSelector();
+external JSPromise<JSString> _showSelector();
 
 @JS('window.getAccount')
 external JSPromise<JSString?> _getAccount();
@@ -30,11 +30,13 @@ class NearWalletSelector {
     }
   }
 
-  void showSelector() {
+  /// Returns type of hide reason, which can be `wallet-navigation` or `user-triggered`
+  Future<String> showSelector() async {
     if (!_inited) {
       throw Exception("Wallet selector not inited");
     }
-    _showSelector();
+    final hideReason = await _showSelector().toDart;
+    return hideReason.toDart;
   }
 
   Future<({String accountId, String privateKey})?> getAccount() async {

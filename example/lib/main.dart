@@ -47,7 +47,11 @@ class _HomePageState extends State<HomePage> {
             children: [
               FilledButton(
                 onPressed: () async {
-                  NearWalletSelector().showSelector();
+                  NearWalletSelector().showSelector().then(
+                    (value) {
+                      print("Hide reason: $value");
+                    },
+                  );
                 },
                 child: const Text(
                   "Open Near Wallet Selector!",
