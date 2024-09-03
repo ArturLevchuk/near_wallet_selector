@@ -23,6 +23,11 @@ export async function getAccount() {
 }
 
 export function clearNearWalletSelectorCredentials() {
+  if (window.selector) {
+    selector.store.observable.source._value.accounts = [];
+    selector.store.observable.source._value.contract = null;
+    selector.store.observable.source._value.selectedWalletId = null;
+  }
   for (let i = localStorage.length - 1; i >= 0; i--) {
     const key = localStorage.key(i);
     if (key.startsWith("near") || key.startsWith("_meteor_wallet") || key.startsWith("herewallet") || key.startsWith("mintbase")) {
