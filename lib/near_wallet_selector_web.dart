@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:js_interop';
 
+import 'package:near_wallet_selector/new_wallet_selector_inteface.dart';
+
 @JS('window.initWalletSelector')
 external JSPromise _initWalletSelector(String network, String contractId);
 
@@ -13,7 +15,7 @@ external JSPromise<JSString?> _getAccount();
 @JS('window.clearNearWalletSelectorCredentials')
 external void _clearNearWalletSelectorCredentials();
 
-class NearWalletSelector {
+class NearWalletSelector implements NearWalletSelectorInterface {
   bool _inited = false;
   static NearWalletSelector? _instance;
   NearWalletSelector._();
@@ -21,6 +23,7 @@ class NearWalletSelector {
     return _instance ??= NearWalletSelector._();
   }
 
+  @override
   Future<void> init(String network, String contractId) async {
     try {
       await (_initWalletSelector(network, contractId).toDart);
@@ -30,7 +33,7 @@ class NearWalletSelector {
     }
   }
 
-  /// Returns type of hide reason, which can be `wallet-navigation` or `user-triggered`
+  @override
   Future<String> showSelector() async {
     if (!_inited) {
       throw Exception("Wallet selector not inited");
@@ -39,6 +42,7 @@ class NearWalletSelector {
     return hideReason.toDart;
   }
 
+  @override
   Future<({String accountId, String privateKey})?> getAccount() async {
     if (!_inited) {
       throw Exception("Wallet selector not inited");
@@ -54,6 +58,7 @@ class NearWalletSelector {
     );
   }
 
+  @override
   void clearCredentials() {
     _clearNearWalletSelectorCredentials();
   }
