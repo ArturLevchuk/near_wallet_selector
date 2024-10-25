@@ -3,16 +3,16 @@ import 'dart:js_interop';
 
 import 'package:near_wallet_selector/new_wallet_selector_inteface.dart';
 
-@JS('window.initWalletSelector')
+@JS('initWalletSelector')
 external JSPromise _initWalletSelector(String network, String contractId);
 
-@JS('window.showSelector')
+@JS('showSelector')
 external JSPromise<JSString> _showSelector();
 
-@JS('window.getAccount')
+@JS('getAccount')
 external JSPromise<JSString?> _getAccount();
 
-@JS('window.clearNearWalletSelectorCredentials')
+@JS('clearNearWalletSelectorCredentials')
 external void _clearNearWalletSelectorCredentials();
 
 class NearWalletSelector implements NearWalletSelectorInterface {
