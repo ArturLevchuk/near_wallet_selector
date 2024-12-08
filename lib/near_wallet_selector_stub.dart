@@ -1,4 +1,4 @@
-import 'package:near_wallet_selector/new_wallet_selector_inteface.dart';
+import 'package:near_wallet_selector/new_wallet_selector_interface.dart';
 
 class NearWalletSelector implements NearWalletSelectorInterface {
   @override

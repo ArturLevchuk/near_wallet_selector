@@ -1,27 +1,28 @@
 name: near_wallet_selector
 description: "Package for the ability to use Near Wallet Selector in Flutter for Web"
-version: 0.0.1
-homepage:
+version: 0.0.2
+homepage: null
 
 environment:
-  sdk: '>=3.4.3 <4.0.0'
+  sdk: ">=3.4.3 <4.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
+  app_links: ^6.3.2
   flutter:
     sdk: flutter
+  flutter_inappwebview: ^6.1.5
+  url_launcher: ^6.3.1
 
 dev_dependencies:
+  flutter_lints: ^3.0.0
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter packages.
 flutter:
-
   # To add assets to your package, add an assets section, like this:
   assets:
     - assets/wallet-selector/dist/
@@ -32,7 +33,6 @@ flutter:
   #
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
-
   # To add custom fonts to your package, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

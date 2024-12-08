@@ -13,20 +13,24 @@ import {
 
 window.clearNearWalletSelectorCredentials = clearNearWalletSelectorCredentials;
 
-window.initWalletSelector = async (network, contractId) => {
+window.initWalletSelector = async (network, contractId, redirectLink) => {
   const selector = await setupWalletSelector({
     network,
     modules: [
-      setupMyNearWallet(),
+      setupMyNearWallet({ successUrl: redirectLink, failureUrl: redirectLink }),
       setupBitteWallet({
         networkId: network,
         contractId,
+        successUrl: redirectLink,
+        failureUrl: redirectLink,
       }),
       setupHereWallet(),
       setupMeteorWallet(),
       setupMintbaseWallet({
         networkId: network,
         contractId,
+        successUrl: redirectLink,
+        failureUrl: redirectLink,
       }),
     ],
   });

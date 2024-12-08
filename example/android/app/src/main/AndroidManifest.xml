@@ -2,6 +2,7 @@
     <application
         android:label="example"
         android:name="${applicationName}"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -20,9 +21,19 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+            <meta-data android:name="flutter_deeplinking_enabled" android:value="false" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Add optional android:host to distinguish your app
+                    from others in case of conflicting scheme name -->
+                <data android:scheme="nearwalletselector" android:host="open.my.app" />
+                <!-- <data android:scheme="sample" /> -->
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
