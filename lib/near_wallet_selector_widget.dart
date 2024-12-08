@@ -25,16 +25,17 @@ class NearWalletSelectorWidgetController extends ChangeNotifier {
   }
 }
 
-
 /// mobile use only
 class NearWalletSelectorWidget extends StatefulWidget {
-  const NearWalletSelectorWidget(
-      {super.key,
-      required this.controller,
-      this.onAccountFound,
-      required this.network,
-      required this.contractId,
-      required this.redirectLink});
+  const NearWalletSelectorWidget({
+    super.key,
+    required this.controller,
+    this.onAccountFound,
+    required this.network,
+    required this.contractId,
+    required this.redirectLink,
+    required this.modalHeight,
+  });
 
   final NearWalletSelectorWidgetController controller;
   final Function(({String accountId, String privateKey})? account)?
@@ -42,6 +43,7 @@ class NearWalletSelectorWidget extends StatefulWidget {
   final String network;
   final String contractId;
   final String redirectLink;
+  final double modalHeight;
 
   @override
   State<NearWalletSelectorWidget> createState() =>
@@ -153,84 +155,82 @@ class _NearWalletSelectorWidgetState extends State<NearWalletSelectorWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      return Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          if (widgetShow)
-            ModalBarrier(
-              color: Colors.black54,
-              onDismiss: () {
-                setState(() {
-                  widgetShow = false;
-                });
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        if (widgetShow)
+          ModalBarrier(
+            color: Colors.black54,
+            onDismiss: () {
+              setState(() {
+                widgetShow = false;
+              });
+            },
+          ),
+        AnimatedSlide(
+          duration: const Duration(milliseconds: 250),
+          offset: widgetShow ? const Offset(0, 0) : const Offset(0, 1),
+          child: SizedBox(
+            height: widget.modalHeight,
+            child: InAppWebView(
+              initialUrlRequest:
+                  URLRequest(url: WebUri(_WebViewConstants.widgetWebviewUrl)),
+              onWebViewCreated: (controller) {
+                webViewController = controller;
+              },
+              onPermissionRequest: (controller, request) async {
+                return PermissionResponse(
+                  resources: request.resources,
+                  action: PermissionResponseAction.GRANT,
+                );
+              },
+              onLoadStart: (controller, url) async {},
+              onLoadStop: (controller, url) async {
+                await controller.callAsyncJavaScript(
+                    functionBody:
+                        """window.initWalletSelector("${widget.network}", "${widget.contractId}", "${widget.redirectLink}")""");
+                await tryToGetAccount();
+              },
+              shouldOverrideUrlLoading: (controller, navigationAction) async {
+                var uri = navigationAction.request.url!;
+
+                if ([
+                  "http",
+                  "https",
+                  "file",
+                  "chrome",
+                  "data",
+                  "javascript",
+                  "about"
+                ].contains(uri.scheme)) {
+                  if (await canLaunchUrl(uri)) {
+                    launchUrl(
+                      uri,
+                    );
+                    setState(() {
+                      widgetShow = false;
+                    });
+
+                    return NavigationActionPolicy.CANCEL;
+                  }
+                }
+
+                return NavigationActionPolicy.ALLOW;
+              },
+              onUpdateVisitedHistory: (controller, url, androidIsReload) {},
+              onLoadError: (controller, url, code, message) {
+                controller.reload();
+              },
+              onConsoleMessage: (controller, consoleMessage) {
+                if (consoleMessage.message
+                    .contains("Wallet selector initialized")) {
+                  webViewReadyCompleter.complete(true);
+                }
               },
             ),
-          AnimatedSlide(
-            duration: const Duration(milliseconds: 250),
-            offset: widgetShow ? const Offset(0, 0) : const Offset(0, 1),
-            child: SizedBox(
-              height: constraints.maxHeight * 0.58,
-              child: InAppWebView(
-                initialUrlRequest:
-                    URLRequest(url: WebUri(_WebViewConstants.widgetWebviewUrl)),
-                onWebViewCreated: (controller) {
-                  webViewController = controller;
-                },
-                onPermissionRequest: (controller, request) async {
-                  return PermissionResponse(
-                    resources: request.resources,
-                    action: PermissionResponseAction.GRANT,
-                  );
-                },
-                onLoadStart: (controller, url) async {},
-                onLoadStop: (controller, url) async {
-                  await controller.callAsyncJavaScript(
-                      functionBody:
-                          """window.initWalletSelector("${widget.network}", "${widget.contractId}", "${widget.redirectLink}")""");
-                  await tryToGetAccount();
-                },
-                shouldOverrideUrlLoading: (controller, navigationAction) async {
-                  var uri = navigationAction.request.url!;
-
-                  if ([
-                    "http",
-                    "https",
-                    "file",
-                    "chrome",
-                    "data",
-                    "javascript",
-                    "about"
-                  ].contains(uri.scheme)) {
-                    if (await canLaunchUrl(uri)) {
-                      launchUrl(
-                        uri,
-                      );
-                      setState(() {
-                        widgetShow = false;
-                      });
-
-                      return NavigationActionPolicy.CANCEL;
-                    }
-                  }
-
-                  return NavigationActionPolicy.ALLOW;
-                },
-                onUpdateVisitedHistory: (controller, url, androidIsReload) {},
-                onLoadError: (controller, url, code, message) {
-                  controller.reload();
-                },
-                onConsoleMessage: (controller, consoleMessage) {
-                  if (consoleMessage.message
-                      .contains("Wallet selector initialized")) {
-                    webViewReadyCompleter.complete(true);
-                  }
-                },
-              ),
-            ),
           ),
-        ],
-      );
-    });
+        ),
+      ],
+    );
   }
 }
