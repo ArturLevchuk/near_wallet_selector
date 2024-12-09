@@ -34,7 +34,6 @@ class NearWalletSelectorWidget extends StatefulWidget {
     required this.network,
     required this.contractId,
     required this.redirectLink,
-    required this.modalHeight,
   });
 
   final NearWalletSelectorWidgetController controller;
@@ -43,7 +42,6 @@ class NearWalletSelectorWidget extends StatefulWidget {
   final String network;
   final String contractId;
   final String redirectLink;
-  final double modalHeight;
 
   @override
   State<NearWalletSelectorWidget> createState() =>
@@ -146,6 +144,12 @@ class _NearWalletSelectorWidgetState extends State<NearWalletSelectorWidget> {
     return Future.value(res?.value);
   }
 
+  double get modalHeight {
+    final deviceHeight = MediaQuery.of(context).size.height;
+    double percentage = -0.0746 * deviceHeight + 120.71;
+    return (percentage / 100) * deviceHeight;
+  }
+
   @override
   void dispose() {
     appLinksSubscription.cancel();
@@ -171,7 +175,7 @@ class _NearWalletSelectorWidgetState extends State<NearWalletSelectorWidget> {
           duration: const Duration(milliseconds: 250),
           offset: widgetShow ? const Offset(0, 0) : const Offset(0, 1),
           child: SizedBox(
-            height: widget.modalHeight,
+            height: modalHeight,
             child: InAppWebView(
               initialUrlRequest:
                   URLRequest(url: WebUri(_WebViewConstants.widgetWebviewUrl)),

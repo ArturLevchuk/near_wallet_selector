@@ -106,7 +106,6 @@ class _HomePageState extends State<HomePage> {
                             network: "testnet",
                             contractId: "test.testnet",
                             redirectLink: "nearwalletselector://open.my.app",
-                            modalHeight: constraints.maxHeight * 0.58,
                             onAccountFound: (account) {
                               print("onAccountFound: $account");
                             },
