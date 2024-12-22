@@ -87,7 +87,7 @@ class _NearWalletSelectorWidgetState extends State<NearWalletSelectorWidget> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
     if (!_localhostServer.isRunning() && !kIsWeb) {
-      await _localhostServer.start();
+      _localhostServer.start();
     }
 
     if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
